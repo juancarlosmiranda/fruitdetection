@@ -1,0 +1,10 @@
+    % KMEANSCLUSTERPROCESSOR Kmeans clustering, returns and array of images
+    %
+    % Author: https://github.com/juancarlosmiranda/
+    % Date: December 2020
+    %
+    % USAGE
+    % clusterProcessor=KmeansClusterProcessor(clustersQuantity, clusteringRepetition, IRGB);
+    % clusterProcessor=clusterProcessor.segmentImage();
+    % clusterProcessor.saveClustersImages(OutputImageNameLAB);
+    %
