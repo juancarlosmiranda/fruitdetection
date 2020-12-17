@@ -1,11 +1,14 @@
-classdef KmeansClusterProcessor
+classdef KmeansNIRClusterProcessor
     % KMEANSCLUSTERPROCESSOR Kmeans clustering, returns and array of images
     %
     % Author: https://github.com/juancarlosmiranda/
     % Date: December 2020
     %
+    % 
+    % Adapted to manage Near infrarred data in two channels
+    %
     % USAGE
-    % clusterProcessor=KmeansClusterProcessor(clustersQuantity, clusteringRepetition, IRGB);
+    % clusterProcessor=KmeansNIRClusterProcessor(clustersQuantity, clusteringRepetition, INIR);
     % clusterProcessor=clusterProcessor.segmentImage();
     % clusterProcessor.saveClustersImages(OutputImageNameLAB);
     %
@@ -13,28 +16,26 @@ classdef KmeansClusterProcessor
     properties
         clustersQuantity=3
         clusteringRepetition=3
-        IRGBOrig
-        segmented_images = cell(1,3)
+        maxChannels=2
+        INIROrig
+        segmented_images
         pixel_label
         rgb_label
-        h = fspecial('average', [5 5]); %TODO: it will be improved to be a parameter
-        ISh  % image filtered
         OutputImageName
     end
     
     methods
-        function obj = KmeansClusterProcessor(clustersQuantityPar, clusteringRepetitionPar, IRGBOrig)
+        function obj = KmeansNIRClusterProcessor(clustersQuantityPar, clusteringRepetitionPar, INIROrig)
             %KMEANSCLUSTERPROCESSOR Construct an instance of this class
             %   Detailed explanation goes here
             % ------------------------------------
             obj.clustersQuantity=clustersQuantityPar;
             obj.clusteringRepetition=clusteringRepetitionPar;
-            obj.IRGBOrig=IRGBOrig;
-            obj.segmented_images = cell(1,3);
+            obj.maxChannels=size(INIROrig,3); % get total channels automatically
+            obj.INIROrig=INIROrig;
+            obj.segmented_images = cell(1,clustersQuantityPar);
             obj.pixel_label=[];
             obj.rgb_label=[];
-            obj.h = fspecial('average', [5 5]);
-            obj.ISh = IRGBOrig; %imfilter(obj.IRGBOrig, obj.h);  % image filtered            
             % ------------------------------------
         end
         
@@ -45,30 +46,23 @@ classdef KmeansClusterProcessor
             % ---------------------------------------------
             %% K-means segmentation
             % --------------------------
-            % apply mean filter
-            obj.ISh = obj.IRGBOrig %imfilter(obj.IRGBOrig, obj.h);
-            % --------------------------
             
-            % transform from RGB to L*a*b
-            cform = makecform('srgb2lab');
-            lab_ISh = applycform(obj.ISh,cform); % apply color conversion independent to device
-            
-            pixelsList = double(lab_ISh(:,:,2:3)); % extract values from a*b* axes
+            pixelsList = double(obj.INIROrig(:,:,1:obj.maxChannels)); % extract values from a*b* axes
             nRows = size(pixelsList,1);
             nCols = size(pixelsList,2);
-            pixelsList = reshape(pixelsList,nRows*nCols,2); %cambia la figura
+            pixelsList = reshape(pixelsList,nRows*nCols,obj.maxChannels); %cambia la figura
                         
             % to repite clustering 3 times to avoid local minimal
             [cluster_idx cluster_center] = kmeans(pixelsList,obj.clustersQuantity,'distance','sqEuclidean', 'Replicates',obj.clusteringRepetition);
             obj.pixel_label = reshape(cluster_idx,nRows,nCols);
             % ---------------------------------------------
             %% Create images
-            obj.segmented_images = cell(1,3);
-            obj.rgb_label = repmat(obj.pixel_label,[1 1 3]);
+            obj.segmented_images = cell(1,obj.clustersQuantity);
+            obj.rgb_label = repmat(obj.pixel_label,[1 1 obj.maxChannels]);
                         
             %% Create clusters images and save it in files
             for k = 1:obj.clustersQuantity
-                color = obj.ISh;
+                color = obj.INIROrig;
                 color(obj.rgb_label ~= k) = 0;
                 obj.segmented_images{k} = color;                
             end
@@ -82,10 +76,11 @@ classdef KmeansClusterProcessor
             %% Iterate into cluster
             for k = 1:obj.clustersQuantity                
                 %% Store clusters in files and create extension
-                extension=strcat('C',strcat(int2str(k),'.jpg'));
-                ClusterImageName=strcat(OutputImageName,extension);                
-                fprintf('Cluster images-> %s \n',ClusterImageName);
-                imwrite(obj.segmented_images{k},ClusterImageName,'jpg');
+                %extension=strcat('C',strcat(int2str(k),'.jpg'));
+                %ClusterImageName=strcat(OutputImageName,extension);                
+                %fprintf('Cluster images-> %s \n',ClusterImageName);
+                %imwrite(obj.segmented_images{k},ClusterImageName,'jpg');
+                figure; heatmap(obj.segmented_images{k})
             end
             % -----------------------
         end

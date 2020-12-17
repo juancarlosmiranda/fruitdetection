@@ -29,7 +29,7 @@ pathOutputResultsSegLAB=fullfile(mainPath,'outcomesLAB','/');
 
 
 %% Llamado de función de clustering
-clustersQuantity=3;
+clustersQuantity=4;
 clusteringRepetition=3;
 
 removeFiles(strcat(pathOutputResultsSegLAB,'*.jpg'));
@@ -37,6 +37,7 @@ removeFiles(strcat(pathOutputResultsSegLAB,'*.jpg'));
 
 %carga del listado de nombres
 fileList=dir(strcat(mainInputPath,'*.jpg'));
+%fileList=dir(strcat(mainInputPath,'*.mat'));
 
 %% lectura en forma de bach del directorio de la cámara
 for n=1:size(fileList)
@@ -51,16 +52,36 @@ for n=1:size(fileList)
     fprintf('OutputImageNameLAB -> %s \n',OutputImageNameLAB);
     %fprintf('nombreImagenSalidaHSV -> %s \n',OutputImageNameHSV);
     % --------------------
-    IRGB=imread(OutputImageName);
+    %IRGB=imread(OutputImageName);
     % --------------------
-    clusterProcessor=KmeansClusterProcessor(clustersQuantity, clusteringRepetition, IRGB);
+    %clusterProcessor=KmeansClusterProcessor(clustersQuantity, clusteringRepetition, IRGB);
+    %clusterProcessor=clusterProcessor.segmentImage();
+    %clusterProcessor.saveClustersImages(OutputImageNameLAB);
+    %arrayS=clusterProcessor.getClusters;
+    
+    %% NIR EXTRACTION by k-means
+    load '/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_DS.mat'
+    IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_RGBhr.jpg')
+    INIR=NIR_DEPTH_res_crop;
+    clusterProcessor=KmeansNIRClusterProcessor(clustersQuantity, clusteringRepetition, INIR);
     clusterProcessor=clusterProcessor.segmentImage();
-    clusterProcessor.saveClustersImages(OutputImageNameLAB);
+    %%clusterProcessor.saveClustersImages(OutputImageNameLAB);
     arrayS=clusterProcessor.getClusters;
     
     
     
+    t=65
+    maskNIR=arrayS{1}(:,:,1)
+    nirMask2=maskNIR(:,:)>t
+    IsegmentedNIR(:,:,1)=immultiply(IRGB(:,:,1),uint8(nirMask2));
+    IsegmentedNIR(:,:,2)=immultiply(IRGB(:,:,2),uint8(nirMask2));
+    IsegmentedNIR(:,:,3)=immultiply(IRGB(:,:,3),uint8(nirMask2));    
+    figure; imshow(IsegmentedNIR)
+    figure; imshow(arrayS{1}(:,:,1))
+    figure; imshow(nirMask2)    
+    % iterate over arrayS, for each image get every blob
     
+        
     break;
 end %
 
