@@ -29,7 +29,7 @@ pathOutputResultsSegLAB=fullfile(mainPath,'outcomesLAB','/');
 
 
 %% Llamado de función de clustering
-clustersQuantity=4;
+clustersQuantity=3;
 clusteringRepetition=3;
 
 removeFiles(strcat(pathOutputResultsSegLAB,'*.jpg'));
@@ -44,6 +44,7 @@ for n=1:size(fileList)
     fprintf('Extrayendo manchas-> %s \n',fileList(n).name);    
     nombreImagenP=fileList(n).name;
     %% salida segmentacion
+    nombreImagenP='BD04_inf_201724_004_01_RGBhr.jpg'
     OutputImageName=strcat(mainInputPath,nombreImagenP);    
     OutputImageNameLAB=strcat(pathOutputResultsSegLAB,nombreImagenP);
     %OutputImageNameHSV=strcat(pathOutputResultsSegHSV,nombreImagenP);    
@@ -52,33 +53,34 @@ for n=1:size(fileList)
     fprintf('OutputImageNameLAB -> %s \n',OutputImageNameLAB);
     %fprintf('nombreImagenSalidaHSV -> %s \n',OutputImageNameHSV);
     % --------------------
-    %IRGB=imread(OutputImageName);
+    IRGB=imread(OutputImageName);
     % --------------------
-    %clusterProcessor=KmeansClusterProcessor(clustersQuantity, clusteringRepetition, IRGB);
+    %IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/images/BD04_inf_201724_004_01_RGBhr.jpg');
+    clusterProcessor=KmeansClusterProcessor(clustersQuantity, clusteringRepetition, IRGB);
+    clusterProcessor=clusterProcessor.segmentImage();
+    clusterProcessor.saveClustersImages(OutputImageNameLAB);
+    arrayS=clusterProcessor.getClusters;
+    break;
+    %% NIR EXTRACTION by k-means
+    %load '/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_DS.mat'
+    %IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_RGBhr.jpg')   
+    %INIR=NIR_DEPTH_res_crop;
+    %clusterProcessor=KmeansNIRClusterProcessor(clustersQuantity, clusteringRepetition, INIR);
     %clusterProcessor=clusterProcessor.segmentImage();
-    %clusterProcessor.saveClustersImages(OutputImageNameLAB);
+    %%clusterProcessor.saveClustersImages(OutputImageNameLAB);
     %arrayS=clusterProcessor.getClusters;
     
-    %% NIR EXTRACTION by k-means
-    load '/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_DS.mat'
-    IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_RGBhr.jpg')
-    INIR=NIR_DEPTH_res_crop;
-    clusterProcessor=KmeansNIRClusterProcessor(clustersQuantity, clusteringRepetition, INIR);
-    clusterProcessor=clusterProcessor.segmentImage();
-    %%clusterProcessor.saveClustersImages(OutputImageNameLAB);
-    arrayS=clusterProcessor.getClusters;
     
-    
-    
-    t=65
-    maskNIR=arrayS{1}(:,:,1)
-    nirMask2=maskNIR(:,:)>t
-    IsegmentedNIR(:,:,1)=immultiply(IRGB(:,:,1),uint8(nirMask2));
-    IsegmentedNIR(:,:,2)=immultiply(IRGB(:,:,2),uint8(nirMask2));
-    IsegmentedNIR(:,:,3)=immultiply(IRGB(:,:,3),uint8(nirMask2));    
-    figure; imshow(IsegmentedNIR)
-    figure; imshow(arrayS{1}(:,:,1))
-    figure; imshow(nirMask2)    
+    %% ----------------------
+    %t=65
+    %maskNIR=arrayS{1}(:,:,1)
+    %nirMask2=maskNIR(:,:)>t
+    %IsegmentedNIR(:,:,1)=immultiply(IRGB(:,:,1),uint8(nirMask2));
+    %IsegmentedNIR(:,:,2)=immultiply(IRGB(:,:,2),uint8(nirMask2));
+    %IsegmentedNIR(:,:,3)=immultiply(IRGB(:,:,3),uint8(nirMask2));    
+    %figure; imshow(IsegmentedNIR)
+    %figure; imshow(arrayS{1}(:,:,1))
+    %figure; imshow(nirMask2)    
     % iterate over arrayS, for each image get every blob
     
         

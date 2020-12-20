@@ -8,3 +8,10 @@
     % clusterProcessor=clusterProcessor.segmentImage();
     % clusterProcessor.saveClustersImages(OutputImageNameLAB);
     %
+
+
+% COUNTINGFRUITSPROCESSOR
+%
+% Author: https://github.com/juancarlosmiranda/
+% Date: December 2020
+%

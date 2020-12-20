@@ -2,9 +2,7 @@ clc; clear all; close all;
 
 
 %% Lectura de la imagen con fondo removido
-%imagenNombreFR='/home/usuario/development/fruitdetection/testingImages/BD12_sup_201711_171_08_RGBhr.jpg1C1.jpg';
-%imagenNombreFR='/home/usuario/development/fruitdetection/testingImages/BD12_sup_201711_171_08_RGBhr.jpg1C2.jpg';
-imagenNombreFR='/home/usuario/development/fruitdetection/testingImages/BD12_sup_201711_171_08_RGBhr.jpgC2.jpg';
+imagenNombreFR='/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/outcomesLAB/BD04_inf_201724_004_01_RGBhr.jpgC2.jpg'
 IFR=imread(imagenNombreFR);
 
 %% Binarización de la silueta fondo removido

@@ -5,15 +5,15 @@
 %
 
 clc; close all; clear all;
-load '/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_DS.mat'
-IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_RGBhr.jpg')
+load '/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD04_inf_201724_004_01_DS.mat'
+IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD04_inf_201724_004_01_RGBhr.jpg')
 
 
 
 % -----------------------
 InirChannel1=NIR_DEPTH_res_crop(:,:,1)  % getn channel 1 from NIR
 InirChannel2=NIR_DEPTH_res_crop(:,:,2)  % getn channel 2 from NIR
-t=65
+t=70;
 %nirMask1=InirChannel1(:,:)<t
 nirMask2=InirChannel1(:,:)>t
 
@@ -26,7 +26,7 @@ IsegmentedNIR(:,:,3)=immultiply(IRGB(:,:,3),nirMask2);
 figure; imshow(IRGB);
 figure; imshow(IsegmentedNIR);
 
-imwrite(IsegmentedNIR,'/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/fromNIR1.jpg','jpg');
+%imwrite(IsegmentedNIR,'/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/fromNIR1.jpg','jpg');
 
 
 
@@ -40,12 +40,18 @@ imwrite(IsegmentedNIR,'/home/usuario/development/datasets_deep_learning/ClippedF
 
 
 
-
+% Channel S: 
+% Channel D:
 
 
 %% to plot data NIR
- heatmapHandle = heatmap(InirChannel, 'ColorMap', jet(100))
+ figure; heatmapHandle1 = heatmap(InirChannel1, 'ColorMap', jet(100));
  maximumValue=max(InirChannel1(:))
- caxis(heatmapHandle,[0 maximumValue])
- saveas(heatmapHandle,'/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/MYHEATMAP','png'); 
+ caxis(heatmapHandle1,[0 maximumValue])
+ saveas(heatmapHandle1,'/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/outcomesHeatmap/MYHEATMAP1','png'); 
 
+
+ figure; heatmapHandle2 = heatmap(InirChannel2, 'ColorMap', jet(100));
+ maximumValue=max(InirChannel2(:))
+ caxis(heatmapHandle2,[0 maximumValue])
+ saveas(heatmapHandle2,'/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/outcomesHeatmap/MYHEATMAP2','png'); 

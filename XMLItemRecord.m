@@ -1,3 +1,8 @@
+% XMLITEMRECORD
+%
+% Author: https://github.com/juancarlosmiranda/
+% Date: December 2020
+%
 classdef XMLItemRecord
     %XMLItemRecord This serve as record variable to read XML format
     %   ...
@@ -26,5 +31,3 @@ classdef XMLItemRecord
         end        
     end
 end
-
-

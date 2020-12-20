@@ -1,0 +1,52 @@
+% XMLITEMRECORD
+%
+% Author: https://github.com/juancarlosmiranda/
+% Date: December 2020
+%
+classdef MetricResultsItemRecord
+    %MetricResultsItemRecord This serve as record for results in counting
+    %   ...
+    
+    properties
+        allGroundTruths=0;
+        allDetected=0;
+        TP=0;
+        FP=0;
+        FN=0;
+        precision=0;
+        recall=0;
+    end
+    
+    methods
+        function obj = MetricResultsItemRecord(allDetectedSize, allGroundTruthsSize)
+            
+                        % all objects detected with the system
+            % all objects marked by humans as groundtruth              
+            FP=allDetected-TP;
+            FN=allGroundTruths-TP;
+
+            % Explanation allDetected=(TP+FP) precision=TP/(TP+FP);
+            precision=TP/(TP+FP);
+            % Explanation allGroundTruths=(TP+FN) recall=TP/(TP+FN);
+            recall=TP/allGroundTruths;
+
+            
+            obj.allGroundTruths=0;
+            obj.allDetected=0;
+            obj.TP=0;
+            obj.FP=0;
+            obj.FN=0;
+            obj.precision=0;
+            obj.recall=0;
+        end
+        function printMetrics(obj)
+            fprintf('allGroundTruths = %i \n', obj.allGroundTruths);
+            fprintf('allDetected = %i \n', obj.allDetected);            
+            fprintf('Detected TP = %i \n', obj.TP);
+            fprintf('Detected by system only FP = %i \n', obj.FP);
+            fprintf('Ground truth not detected FN = %i \n', obj.FN);
+            fprintf('Precision = %3f \n', obj.precision);
+            fprintf('Recall = %3f \n', obj.recall);
+        end        
+    end
+end
