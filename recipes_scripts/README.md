@@ -2,7 +2,6 @@
 #README
 -----------
 Fruit detector based in machine learning techniques.
-From a dataset xxxxx, segment fruits by K-means and with an SVM filter by color.
 
 script_Calculation_NDI_index.m
 This script contains the NDI calculation implemented in Matlab to subtract red colors and green colors. Use the binary mask technique to obtain the desired object. This technique is widely used in computer vision systems applied to agriculture.
