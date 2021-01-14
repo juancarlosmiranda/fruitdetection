@@ -10,9 +10,9 @@
 %% setting environment
 clc; close all; clear all;
 home_user=pwd;
-pathScript=fullfile(home_user,'development/fruitdetection/');
-pathTestImages=fullfile(home_user,'development/fruitdetection/testingImages/');
-pathTestNIR=fullfile(home_user,'development/fruitdetection/testingImages/');
+pathScript=fullfile(home_user,'development/fruitdetection/recipes_scripts/');
+pathTestImages=fullfile(pathScript,'testingImages/');
+pathTestNIR=fullfile(pathScript,'testingImages/');
 
 % data names: images and NIR
 imageName='BD04_inf_201724_004_01_RGBhr.jpg';

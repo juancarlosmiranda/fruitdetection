@@ -14,11 +14,11 @@
 %% setting environment
 clc; close all; clear all;
 home_user=pwd;
-pathScript=fullfile(home_user,'development/fruitdetection/');
+pathScript=fullfile(home_user,'development/fruitdetection/recipes_scripts/');
 
 % input data
-pathTestImages=fullfile(home_user,'development/fruitdetection/testingImages/');
-pathTestNIR=fullfile(home_user,'development/fruitdetection/testingImages/');
+pathTestImages=fullfile(pathScript,'testingImages/');
+pathTestNIR=fullfile(pathScript,'testingImages/');
 
 % output data
 path_output_images=fullfile(home_user,'development/fruitdetection/testingImages/test_threshold_NIR/');
