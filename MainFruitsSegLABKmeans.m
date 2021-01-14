@@ -44,7 +44,8 @@ for n=1:size(fileList)
     fprintf('Extrayendo manchas-> %s \n',fileList(n).name);    
     nombreImagenP=fileList(n).name;
     %% salida segmentacion
-    nombreImagenP='BD04_inf_201724_004_01_RGBhr.jpg'
+    %nombreImagenP='BD04_inf_201724_004_01_RGBhr.jpg';
+    nombreImagenP='apples_squares_1.jpg';
     OutputImageName=strcat(mainInputPath,nombreImagenP);    
     OutputImageNameLAB=strcat(pathOutputResultsSegLAB,nombreImagenP);
     %OutputImageNameHSV=strcat(pathOutputResultsSegHSV,nombreImagenP);    
@@ -60,7 +61,14 @@ for n=1:size(fileList)
     clusterProcessor=clusterProcessor.segmentImage();
     clusterProcessor.saveClustersImages(OutputImageNameLAB);
     arrayS=clusterProcessor.getClusters;
+    % -----------------------------
+    labelToFilter='Poma';
+    filterClassifier=FilterClassifier(labelToFilter);
+    IMfiltered=filterClassifier.runFilterClassifier(arrayS);
+    figure;imshow(IMfiltered);
+    % -----------------------------    
     break;
+    
     %% NIR EXTRACTION by k-means
     %load '/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_DS.mat'
     %IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/original/BD12_sup_201711_171_08_RGBhr.jpg')   

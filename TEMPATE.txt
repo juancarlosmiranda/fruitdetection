@@ -1,5 +1,5 @@
     % KMEANSCLUSTERPROCESSOR Kmeans clustering, returns and array of images
-    %
+    % Fruit Detection Project
     % Author: https://github.com/juancarlosmiranda/
     % Date: December 2020
     %
@@ -10,8 +10,18 @@
     %
 
 
-% COUNTINGFRUITSPROCESSOR
-%
+% ------------------------------------------------------------------------
+% Fruit Detection Project
 % Author: https://github.com/juancarlosmiranda/
 % Date: December 2020
-%
+% ------------------------------------------------------------------------
+
+
+
+TEST CASES
+------------------
+https://es.mathworks.com/help/matlab/matlab_prog/write-simple-test-case-using-classes.html
+
+
+
+

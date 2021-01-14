@@ -34,7 +34,7 @@ classdef KmeansClusterProcessor
             obj.pixel_label=[];
             obj.rgb_label=[];
             obj.h = fspecial('average', [5 5]);
-            obj.ISh = IRGBOrig; %imfilter(obj.IRGBOrig, obj.h);  % image filtered            
+            obj.ISh = IRGBOrig; %imfilter(obj.IRGBOrig, obj.h);  % image filtered
             % ------------------------------------
         end
         
@@ -57,7 +57,7 @@ classdef KmeansClusterProcessor
             nRows = size(pixelsList,1);
             nCols = size(pixelsList,2);
             pixelsList = reshape(pixelsList,nRows*nCols,2); %cambia la figura
-                        
+            
             % to repite clustering 3 times to avoid local minimal
             [cluster_idx cluster_center] = kmeans(pixelsList,obj.clustersQuantity,'distance','sqEuclidean', 'Replicates',obj.clusteringRepetition);
             obj.pixel_label = reshape(cluster_idx,nRows,nCols);
@@ -65,12 +65,12 @@ classdef KmeansClusterProcessor
             %% Create images
             obj.segmented_images = cell(1,3);
             obj.rgb_label = repmat(obj.pixel_label,[1 1 3]);
-                        
+            
             %% Create clusters images and save it in files
             for k = 1:obj.clustersQuantity
                 color = obj.ISh;
                 color(obj.rgb_label ~= k) = 0;
-                obj.segmented_images{k} = color;                
+                obj.segmented_images{k} = color;
             end
             % -----------------------
         end
@@ -78,12 +78,12 @@ classdef KmeansClusterProcessor
         function obj = saveClustersImages(obj,OutputImageName)
             %SAVECLUSTERSIMAGES Given a path save images into files if it
             % is necessary
-            % ----------------------            
+            % ----------------------
             %% Iterate into cluster
-            for k = 1:obj.clustersQuantity                
+            for k = 1:obj.clustersQuantity
                 %% Store clusters in files and create extension
                 extension=strcat('C',strcat(int2str(k),'.jpg'));
-                ClusterImageName=strcat(OutputImageName,extension);                
+                ClusterImageName=strcat(OutputImageName,extension);
                 fprintf('Cluster images-> %s \n',ClusterImageName);
                 imwrite(obj.segmented_images{k},ClusterImageName,'jpg');
             end
