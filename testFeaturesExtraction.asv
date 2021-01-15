@@ -3,9 +3,8 @@
 % Author: https://github.com/juancarlosmiranda/
 % Date: December 2020
 % ------------------------------------------------------------------------
-% Testing color-based features for RGB, LAB, HSV colro spaces
 
-classdef testFeaturesExtractionIM < matlab.unittest.TestCase
+classdef testFeaturesExtraction < matlab.unittest.TestCase
     % testFeaturesExtraction
     % Test results in evaluation methods
     %
@@ -17,22 +16,21 @@ classdef testFeaturesExtractionIM < matlab.unittest.TestCase
         % -----------------------------------------------------------------
         function testColorFeaturesRGB(testCase)
             fprintf('testColorFeaturesRGB(testCase) \n')
-            home_user=pwd
+            home_user=pwd;
             % -------------------------------------------------------------
-            IRGBPath=fullfile(home_user,'fruitdetection/testingImages/BD04_inf_201724_004_01_RGBhr.jpg_1.jpg')
+            IRGBPath=fullfile(pwd,'testingImages/apple1.jpg');
             IRGB=imread(IRGBPath);
             % -------------------------------------------------------------            
             featureExtractor=FeaturesExtractionIM(IRGB);
             [resultMeanR, resultMeanG, resultMeanB, resultStdR, resultStdG, resultStdB] = featureExtractor.getColorFeaturesRGB();            
             % -------------------------------------------------------------
             % RGB 133.698113 121.315863 128.957372 - std2 82.700250 66.947032 79.124462
-            % RGB 180.394531 185.025174 177.781684 - std2 65.570758 52.049187 62.389665 
-            expMeanR=180.394531;
-            expMeanG=185.025174;            
-            expMeanB=177.781684;            
-            expStdR=65.570758;
-            expStdG=52.049187;            
-            expStdB=62.389665;            
+            expMeanR=133.698113;
+            expMeanG=121.315863;            
+            expMeanB=128.957372;            
+            expStdR=82.700250;
+            expStdG=66.947032;            
+            expStdB=79.124462;            
             % -------------------------------------------------------------
             testCase.verifyEqual(resultMeanR,expMeanR,'AbsTol',0.5);            
             testCase.verifyEqual(resultMeanG,expMeanG,'AbsTol',0.5);            
@@ -47,19 +45,21 @@ classdef testFeaturesExtractionIM < matlab.unittest.TestCase
             fprintf('testColorFeatures(testCase) \n')
             home_user=pwd;
             % -------------------------------------------------------------
-            IRGBPath=fullfile(home_user,'fruitdetection/testingImages/BD04_inf_201724_004_01_RGBhr.jpg_1.jpg');
+            IRGBPath=fullfile(pwd,'testingImages/apple1.jpg');
             IRGB=imread(IRGBPath);
             % -------------------------------------------------------------
             featureExtractor=FeaturesExtractionIM(IRGB);
             [resultMeanL, resultMeanA, resultMeanB, resultStdL, resultStdA, resultStdB] = featureExtractor.getColorFeaturesLAB();            
             % -------------------------------------------------------------
-            % LAB 74.071321 -3.247036 3.593657 - std2 21.210117 10.683761 6.751480
-            expMeanLABL=74.071321;
-            expMeanLABa=-3.247036;            
-            expMeanLABb=3.593657;           
-            expStdLABL=21.210117;
-            expStdLABa=10.683761;            
-            expStdLABb=6.751480;            
+            %resultMeanRGB=0.470588235294118;            
+            %expMeanRGB=0.470588235294118;
+
+            expMeanLABL=50.789771;
+            expMeanLABa=5.682696;            
+            expMeanLABb=-2.026963;           
+            expStdLABL=29.108522;
+            expStdLABa=10.834723;            
+            expStdLABb=6.597943;            
             % -------------------------------------------------------------
             testCase.verifyEqual(resultMeanL,expMeanLABL,'AbsTol',0.5);            
             testCase.verifyEqual(resultMeanA,expMeanLABa,'AbsTol',0.5);            
@@ -74,20 +74,19 @@ classdef testFeaturesExtractionIM < matlab.unittest.TestCase
             fprintf('testColorFeaturesHSV(testCase) \n')
             home_user=pwd;
             % -------------------------------------------------------------
-            IRGBPath=fullfile(home_user,'fruitdetection/testingImages/BD04_inf_201724_004_01_RGBhr.jpg_1.jpg');
+            IRGBPath=fullfile(pwd,'testingImages/apple1.jpg');
             IRGB=imread(IRGBPath);
             % -------------------------------------------------------------            
             featureExtractor=FeaturesExtractionIM(IRGB);
             [resultMeanH, resultMeanS, resultMeanV, resultStdH, resultStdS, resultStdV] = featureExtractor.getColorFeaturesHSV();            
             % -------------------------------------------------------------
             % HSV 0.628720 0.225088 0.540300 - std2 0.317671 0.211912 0.309886 
-            % HSV 0.506991 0.151803 0.755682 - std2 0.295421 0.159484 0.221293
-            expMeanH=0.506991;
-            expMeanS=0.151803;            
-            expMeanV=0.755682;            
-            expStdH=0.295421;
-            expStdS=0.159484;            
-            expStdV=0.221293;            
+            expMeanH=0.628720;
+            expMeanS=0.225088;            
+            expMeanV=0.540300;            
+            expStdH=0.317671;
+            expStdS=0.211912;            
+            expStdV=0.309886;            
             % -------------------------------------------------------------
             testCase.verifyEqual(resultMeanH,expMeanH,'AbsTol',0.5);            
             testCase.verifyEqual(resultMeanS,expMeanS,'AbsTol',0.5);            

@@ -309,7 +309,7 @@ classdef DataFeatureProcessor
                     % NIR features 
                     meanNIR1=[0.0];
                     stdNIR1=[0.0];                    
-                    [meanNIR1, stdNIR1]=;
+                    %[meanNIR1, stdNIR1]=;
                     % ------------------------------------
                     image_name={imageNamedF};
                     label_class={currentLabel};                   

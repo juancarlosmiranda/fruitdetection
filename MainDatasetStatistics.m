@@ -100,7 +100,7 @@ for n=1:size(fileList)
     labelToFilter='Poma';
     dataFeatureProcessor=DataFeatureProcessor(IRGB, INIR, currentFileName);
     resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelRGB(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
-    %GOOD resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
+    resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
     
     % unified in one image
     %GOOD resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelNIRUnified(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
@@ -109,13 +109,13 @@ for n=1:size(fileList)
     %dataFeatureProcessor.drawHeatmap(pathOutputResultsHeatmap);
     % -----------------------------        
     %GOOD tablaDSTraining=dataFeatureProcessor.getFeaturesByLabelRGB(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsFeaturesFiles);
-    tablaDSTraining=dataFeatureProcessor.getFeaturesByLabelRGBNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsFeaturesFiles);
-    tablaDSTrainingAll=[tablaDSTrainingAll; tablaDSTraining]
+    %tablaDSTraining=dataFeatureProcessor.getFeaturesByLabelRGBNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsFeaturesFiles);
+    %tablaDSTrainingAll=[tablaDSTrainingAll; tablaDSTraining]
     % -----------------------------
     break;
     
     
 end %
-pathFileCroppedSave=fullfile(pathOutputResultsFeaturesFiles,'allfiles.csv')
-writetable(tablaDSTrainingAll,pathFileCroppedSave,'Delimiter',';')
+%pathFileCroppedSave=fullfile(pathOutputResultsFeaturesFiles,'allfiles.csv')
+%writetable(tablaDSTrainingAll,pathFileCroppedSave,'Delimiter',';')
 

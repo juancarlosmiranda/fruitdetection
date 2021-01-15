@@ -17,24 +17,23 @@ classdef FeaturesExtractionNIR
     
     methods
         function obj = FeaturesExtractionNIR(ImageNIR)
-            % FeaturesExtractionNIR
+            % FeaturesExtraction
             %   .
             obj.ImageNIR = ImageNIR;
         end        
                 
-        function [meanChannel1, meanChannel2, stdChannel1, stdChannel2] = getColorFeaturesNIR(obj)
-            % getColorFeaturesNIR ..
-            %   ..
-            % -------------------------------------------------------------
-            INIR=obj.ImageNIR;            
-            meanChannel1=mean2(INIR(:,:,1));
-            meanChannel2=mean2(INIR(:,:,2));
-            stdChannel1=std2(INIR(:,:,1));
-            stdChannel2=std2(INIR(:,:,2));
-            fprintf('NIR %3f %3f - std2 %3f %3f \n', meanChannel1, meanChannel2, stdChannel1, stdChannel2);
-        end        
+        function resultMeanNIR = getMeanNIR(obj)
+            meanR=mean2(obj.ImageNIR(:,:,1));
+            meanG=mean2(obj.ImageNIR(:,:,2));
+            meanB=mean2(obj.ImageNIR(:,:,3));
+            stdR=std2(obj.ImageNIR(:,:,1));
+            stdG=std2(obj.ImageNIR(:,:,2));
+            stdB=std2(obj.ImageNIR(:,:,3));
+            fprintf('RGB %3f %3f %3f - std2 %3f %3f %3f \n', meanR, meanG, meanB, stdR, stdG, stdB);
+            resultMeanNIR=0;
+        end
+
         
     end % end of methods
 end % end of class
 
-% TODO: add help to each methods

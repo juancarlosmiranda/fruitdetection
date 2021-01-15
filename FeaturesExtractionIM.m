@@ -2,6 +2,10 @@
 % Fruit Detection Project
 % Author: https://github.com/juancarlosmiranda/
 % Date: December 2020
+% 
+% Given an image, it calculates color-based features in RGB, LAB, HSV
+% spaces colors
+%
 % ------------------------------------------------------------------------
 classdef FeaturesExtractionIM
     %FeaturesExtraction .
@@ -19,7 +23,7 @@ classdef FeaturesExtractionIM
 
         
         function resultMeanRGB = getMeanRGBbyMask(obj)
-            %resultMeanRGb ..
+            % getMeanRGBbyMask ..
             %   ..
             % -------------------------------------------------------------
             FOREGROUND=1;
@@ -82,7 +86,10 @@ classdef FeaturesExtractionIM
             resultMeanRGB=0;
         end % end of function        
         
-        function resultMeanRGB = getColorFeaturesRGB(obj)
+        function [meanR, meanG, meanB, stdR, stdG, stdB] = getColorFeaturesRGB(obj)
+            % getColorFeaturesRGB ..
+            %   ..
+            % -------------------------------------------------------------
             meanR=mean2(obj.ImageRGB(:,:,1));
             meanG=mean2(obj.ImageRGB(:,:,2));
             meanB=mean2(obj.ImageRGB(:,:,3));
@@ -90,10 +97,12 @@ classdef FeaturesExtractionIM
             stdG=std2(obj.ImageRGB(:,:,2));
             stdB=std2(obj.ImageRGB(:,:,3));
             fprintf('RGB %3f %3f %3f - std2 %3f %3f %3f \n', meanR, meanG, meanB, stdR, stdG, stdB);
-            resultMeanRGB=0;
         end
 
         function [meanL, meanA, meanB, stdL, stdA, stdB] = getColorFeaturesLAB(obj)
+            % getColorFeaturesLAB ..
+            %   ..
+            % -------------------------------------------------------------
             ILAB=rgb2lab(obj.ImageRGB);            
             meanL=mean2(ILAB(:,:,1));
             meanA=mean2(ILAB(:,:,2));
@@ -102,11 +111,12 @@ classdef FeaturesExtractionIM
             stdA=std2(ILAB(:,:,2));
             stdB=std2(ILAB(:,:,3));
             fprintf('LAB %3f %3f %3f - std2 %3f %3f %3f \n', meanL, meanA, meanB, stdL, stdA, stdB);
-            %resultMeanLAB=[meanL, meanA, meanB, stdL, stdA, stdB];
         end        
-        % TODO: load in a vector
 
-        function resultMeanHSV = getColorFeaturesHSV(obj)
+        function [meanH, meanS, meanV, stdH, stdS, stdV] = getColorFeaturesHSV(obj)
+            % getColorFeaturesHSV ..
+            %   ..
+            % -------------------------------------------------------------
             IHSV=rgb2hsv(obj.ImageRGB);            
             meanH=mean2(IHSV(:,:,1));
             meanS=mean2(IHSV(:,:,2));
@@ -115,9 +125,8 @@ classdef FeaturesExtractionIM
             stdS=std2(IHSV(:,:,2));
             stdV=std2(IHSV(:,:,3));
             fprintf('HSV %3f %3f %3f - std2 %3f %3f %3f \n', meanH, meanS, meanV, stdH, stdS, stdV);
-            resultMeanHSV=0;
-        end
-        
+        end        
     end % end of methods
 end % end of class
 
+% TODO: add help to each methods
