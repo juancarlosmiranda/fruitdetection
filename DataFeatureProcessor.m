@@ -230,9 +230,9 @@ classdef DataFeatureProcessor
             % ------------------------------
             % initializing tables
             headers_t={'image_name', 'meanLABL', 'meanLABa', 'meanLABb', 'stdLABL', 'stdLABa', 'stdLABb', 'meanNIR1', 'stdNIR1', 'label_class'};
-            cellRecord = {'image2',0,0,0,0,0,0,0,0,'label2'};
+            cellRecord = {'',0,0,0,0,0,0,0,0,''};
             tablaDSTraining = cell2table(cellRecord(1:end,:),'VariableNames',headers_t)
-            % ------------------------------                       
+            % ------------------------------
             if (size(humanLabeledList,1)==0)
                 %Here if objects does not exist
                 fprintf('No Objects marked \n');
@@ -245,8 +245,8 @@ classdef DataFeatureProcessor
                     % -------------------------------------
                     % create a string with the name
                     imageNamedF=strcat(obj.imageName,'_',num2str(n),'.', obj.formatImage); % to tget current box
-                    fprintf('imageNamedF=%s \n', imageNamedF);                  
-                    fprintf('currentLabel=%s \n', currentLabel);                                      
+                    fprintf('imageNamedF=%s \n', imageNamedF);
+                    fprintf('currentLabel=%s \n', currentLabel);
                     % pathToSave
                     IMcropped = imcrop(obj.ARGBImage,vectorHumanDraw); % sub image
                     featureExtractor=FeaturesExtractionIM(IMcropped);
@@ -255,18 +255,18 @@ classdef DataFeatureProcessor
                     image_name={imageNamedF};
                     meanNIR1=[0.0];
                     stdNIR1=[0.0];
-                    label_class={currentLabel};                   
+                    label_class={currentLabel};
                     cellRecord = {image_name,meanLABL,meanLABa,meanLABb,stdLABL,stdLABa,stdLABb,meanNIR1,stdNIR1,label_class};
                     tablaDSTraining=[tablaDSTraining;cellRecord];
                     % ------------------------------------
                 end
                 % ------------------------------------
-                % write in file                
+                % write in file
                 % here writes in output file
                 % ------------------------------------
-                writetable(tablaDSTraining,pathFileCroppedSave,'Delimiter',';')                
+                writetable(tablaDSTraining,pathFileCroppedSave,'Delimiter',';')
             end
-        end        
+        end
         % ----------------------------------------------
         function tablaDSTraining = getFeaturesByLabelRGBNIR(obj,humanLabeledList, humanLabels, labelToFilter, pathFileToSave)
             % getFeaturesByLabelRGB Given a list  with squares get
@@ -282,9 +282,9 @@ classdef DataFeatureProcessor
             % ------------------------------
             % initializing tables
             headers_t={'image_name', 'meanLABL', 'meanLABa', 'meanLABb', 'stdLABL', 'stdLABa', 'stdLABb', 'meanNIR1', 'stdNIR1', 'label_class'};
-            cellRecord = {'image2',0,0,0,0,0,0,0,0,'label2'};
+            cellRecord = {'',0,0,0,0,0,0,0,0,''};
             tablaDSTraining = cell2table(cellRecord(1:end,:),'VariableNames',headers_t)
-            % ------------------------------                       
+            % ------------------------------
             if (size(humanLabeledList,1)==0)
                 %Here if objects does not exist
                 fprintf('No Objects marked \n');
@@ -297,34 +297,61 @@ classdef DataFeatureProcessor
                     % -------------------------------------
                     % create a string with the name
                     imageNamedF=strcat(obj.imageName,'_',num2str(n),'.', obj.formatImage); % to tget current box
-                    fprintf('imageNamedF=%s \n', imageNamedF);                  
-                    fprintf('currentLabel=%s \n', currentLabel);                                      
+                    fprintf('imageNamedF=%s \n', imageNamedF);
+                    fprintf('currentLabel=%s \n', currentLabel);
                     % -------------------------------------
-                    % Image features 
+                    % Image features
                     IMcropped = imcrop(obj.ARGBImage,vectorHumanDraw); % sub image
-                    featureExtractor=FeaturesExtractionIM(IMcropped);
-                    [meanLABL, meanLABa, meanLABb, stdLABL, stdLABa, stdLABb] = featureExtractor.getColorFeaturesLAB();
+                    featureExtractorRGB=FeaturesExtractionIM(IMcropped);
+                    [meanLABL, meanLABa, meanLABb, stdLABL, stdLABa, stdLABb] = featureExtractorRGB.getColorFeaturesLAB();
                     % ------------------------------------
                     % -------------------------------------
-                    % NIR features 
-                    meanNIR1=[0.0];
-                    stdNIR1=[0.0];                    
+                    % NIR features
+                    %meanNIR1=[0.0];
+                    %stdNIR1=[0.0];
                     %[meanNIR1, stdNIR1]=;
+                    % -------------------------------------
+                    x1=humanLabeledList(n,1);
+                    y1=humanLabeledList(n,2);
+                    x2=humanLabeledList(n,3)+x1;
+                    y2=humanLabeledList(n,4)+y1;
+                    % -------------------------------
+                    % copy all NIR channels
+                    % -------------------------------------
+                    fprintf('y1=%d y2=%d, x1=%d x2=%d', y1,y2, x1,x2)
+                    if (y1==0)
+                        y1=1;
+                    end
+                    if (x1==0)
+                        x1=1;
+                    end                    
+                    INIRObject=obj.ANIRImage(y1:y2, x1:x2); % reset variable
+                    INIRObject(:,:,1)=0;
+                    INIRObject(:,:,2)=0;
+                    INIRObject(:,:,1)=obj.ANIRImage(y1:y2, x1:x2, 1);
+                    INIRObject(:,:,2)=obj.ANIRImage(y1:y2, x1:x2, 2);
+                    % -------------------------------------
+                    featureExtractorNIR=FeaturesExtractionNIR(INIRObject);
+                    [meanNIR1, meanChannel2, stdNIR1, stdChannel2, minChannel1, maxChannel1] = featureExtractorNIR.getColorFeaturesNIR();
+                    %meanNIR1=1.1;
+                    %stdNIR1=1.1;
                     % ------------------------------------
                     image_name={imageNamedF};
-                    label_class={currentLabel};                   
+                    label_class={currentLabel};
                     cellRecord = {image_name,meanLABL,meanLABa,meanLABb,stdLABL,stdLABa,stdLABb,meanNIR1,stdNIR1,label_class};
                     tablaDSTraining=[tablaDSTraining;cellRecord];
+                    
+                    %break
                     % ------------------------------------
                 end
                 % ------------------------------------
-                % write in file                
+                % write in file
                 % here writes in output file
                 % ------------------------------------
-                writetable(tablaDSTraining,pathFileCroppedSave,'Delimiter',';')                
+                writetable(tablaDSTraining,pathFileCroppedSave,'Delimiter',';')
             end
-        end        
-        % ----------------------------------------------        
+        end
+        % ----------------------------------------------
     end
 end
 

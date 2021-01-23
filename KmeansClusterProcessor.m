@@ -94,9 +94,7 @@ classdef KmeansClusterProcessor
             %GETCLUSTERS
             %   Returns an array of images
             segmented_images = obj.segmented_images;
-        end
-        
-        
+        end                
     end
 end
 

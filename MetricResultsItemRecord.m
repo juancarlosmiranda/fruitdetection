@@ -21,7 +21,7 @@ classdef MetricResultsItemRecord
         function obj = MetricResultsItemRecord(allDetectedSize, allGroundTruthsSize, TP)
             % size of all objects detected with the system
             obj.allDetectedSize=allDetectedSize;
-            % size of all objects marked by humans as groundtruth              
+            % size of all objects marked by humans as groundtruth
             obj.allGroundTruthsSize=allGroundTruthsSize;
             obj.TP=TP; % true positive detected with IoU metric
             obj.FP=allDetectedSize-TP;
@@ -34,14 +34,14 @@ classdef MetricResultsItemRecord
         function printMetrics(obj)
             fprintf('\n -------------------------------- \n');
             fprintf('printMetrics(obj)');
-            fprintf('\n -------------------------------- \n');            
+            fprintf('\n -------------------------------- \n');
             fprintf('allGroundTruths = %i \n', obj.allGroundTruthsSize);
-            fprintf('allDetected = %i \n', obj.allDetectedSize);            
+            fprintf('allDetected = %i \n', obj.allDetectedSize);
             fprintf('Detected TP = %i \n', obj.TP);
             fprintf('Detected by system only FP = %i \n', obj.FP);
             fprintf('Ground truth not detected FN = %i \n', obj.FN);
             fprintf('Precision = %3f \n', obj.precision);
             fprintf('Recall = %3f \n', obj.recall);
-        end        
+        end
     end
 end

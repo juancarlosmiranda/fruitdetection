@@ -47,19 +47,19 @@ classdef testFeaturesExtractionIM < matlab.unittest.TestCase
             fprintf('testColorFeatures(testCase) \n')
             home_user=pwd;
             % -------------------------------------------------------------
-            IRGBPath=fullfile(home_user,'fruitdetection/testingImages/BD04_inf_201724_004_01_RGBhr.jpg_1.jpg');
+            IRGBPath=fullfile(home_user,'fruitdetection/testingImages/BD04_inf_201724_004_01_RGBhr.jpg_1.jpg')
             IRGB=imread(IRGBPath);
             % -------------------------------------------------------------
             featureExtractor=FeaturesExtractionIM(IRGB);
             [resultMeanL, resultMeanA, resultMeanB, resultStdL, resultStdA, resultStdB] = featureExtractor.getColorFeaturesLAB();            
             % -------------------------------------------------------------
-            % LAB 74.071321 -3.247036 3.593657 - std2 21.210117 10.683761 6.751480
-            expMeanLABL=74.071321;
-            expMeanLABa=-3.247036;            
-            expMeanLABb=3.593657;           
-            expStdLABL=21.210117;
-            expStdLABa=10.683761;            
-            expStdLABb=6.751480;            
+            % LAB 68.953490 72.077289 73.407548 - std2 17.371340 15.809226 14.989873            
+            expMeanLABL=68.953490;
+            expMeanLABa=72.077289;            
+            expMeanLABb=73.407548;           
+            expStdLABL=17.371340;
+            expStdLABa=15.809226;            
+            expStdLABb=14.989873;            
             % -------------------------------------------------------------
             testCase.verifyEqual(resultMeanL,expMeanLABL,'AbsTol',0.5);            
             testCase.verifyEqual(resultMeanA,expMeanLABa,'AbsTol',0.5);            

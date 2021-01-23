@@ -90,12 +90,12 @@ classdef FeaturesExtractionIM
             % getColorFeaturesRGB ..
             %   ..
             % -------------------------------------------------------------
-            meanR=mean2(obj.ImageRGB(:,:,1));
-            meanG=mean2(obj.ImageRGB(:,:,2));
-            meanB=mean2(obj.ImageRGB(:,:,3));
-            stdR=std2(obj.ImageRGB(:,:,1));
-            stdG=std2(obj.ImageRGB(:,:,2));
-            stdB=std2(obj.ImageRGB(:,:,3));
+            meanR=mean2(obj.ImageRGB(:,1));
+            meanG=mean2(obj.ImageRGB(:,2));
+            meanB=mean2(obj.ImageRGB(:,3));
+            stdR=std2(obj.ImageRGB(:,1));
+            stdG=std2(obj.ImageRGB(:,2));
+            stdB=std2(obj.ImageRGB(:,3));
             fprintf('RGB %3f %3f %3f - std2 %3f %3f %3f \n', meanR, meanG, meanB, stdR, stdG, stdB);
         end
 
@@ -104,12 +104,12 @@ classdef FeaturesExtractionIM
             %   ..
             % -------------------------------------------------------------
             ILAB=rgb2lab(obj.ImageRGB);            
-            meanL=mean2(ILAB(:,:,1));
-            meanA=mean2(ILAB(:,:,2));
-            meanB=mean2(ILAB(:,:,3));
-            stdL=std2(ILAB(:,:,1));
-            stdA=std2(ILAB(:,:,2));
-            stdB=std2(ILAB(:,:,3));
+            meanL=mean2(ILAB(:,1));
+            meanA=mean2(ILAB(:,2))
+            meanB=mean2(ILAB(:,3));
+            stdL=std2(ILAB(:,1));
+            stdA=std2(ILAB(:,2));
+            stdB=std2(ILAB(:,3));
             fprintf('LAB %3f %3f %3f - std2 %3f %3f %3f \n', meanL, meanA, meanB, stdL, stdA, stdB);
         end        
 
@@ -118,12 +118,12 @@ classdef FeaturesExtractionIM
             %   ..
             % -------------------------------------------------------------
             IHSV=rgb2hsv(obj.ImageRGB);            
-            meanH=mean2(IHSV(:,:,1));
-            meanS=mean2(IHSV(:,:,2));
-            meanV=mean2(IHSV(:,:,3));
-            stdH=std2(IHSV(:,:,1));
-            stdS=std2(IHSV(:,:,2));
-            stdV=std2(IHSV(:,:,3));
+            meanH=mean2(IHSV(:,1));
+            meanS=mean2(IHSV(:,2));
+            meanV=mean2(IHSV(:,3));
+            stdH=std2(IHSV(:,1));
+            stdS=std2(IHSV(:,2));
+            stdV=std2(IHSV(:,3));
             fprintf('HSV %3f %3f %3f - std2 %3f %3f %3f \n', meanH, meanS, meanV, stdH, stdS, stdV);
         end        
     end % end of methods

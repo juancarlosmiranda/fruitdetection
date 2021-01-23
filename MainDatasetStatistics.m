@@ -21,6 +21,7 @@ clc; clear all; close all;
 
 %% Images folders Path
 DatasetPath=fullfile('/','home','usuario','development','fruitdetection','fuji_training');
+%DatasetPath=fullfile('/','home','usuario','development','fruitdetection','fuji_test');
 mainPathDsRGB=fullfile(DatasetPath,'images','/'); % RGB
 mainPathDsNIR=fullfile(DatasetPath,'images','/'); % NIR
 mainPathDsXML=fullfile(DatasetPath,'square_annotations1','/'); % path to XML squares labeled by human
@@ -49,7 +50,7 @@ ExtensionSquare='.xml';
 fileList=dir(strcat(mainPathDsRGB,'*.jpg'));
 
 headers_t={'image_name', 'meanLABL', 'meanLABa', 'meanLABb', 'stdLABL', 'stdLABa', 'stdLABb', 'meanNIR1', 'stdNIR1', 'label_class'};
-cellRecord = {'image2',0,0,0,0,0,0,0,0,'label2'};
+cellRecord = {'',0,0,0,0,0,0,0,0,''};
 tablaDSTrainingAll = cell2table(cellRecord(1:end,:),'VariableNames',headers_t)
 
 %% reading folder in batch mode
@@ -100,7 +101,7 @@ for n=1:size(fileList)
     labelToFilter='Poma';
     dataFeatureProcessor=DataFeatureProcessor(IRGB, INIR, currentFileName);
     resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelRGB(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
-    resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
+    %resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
     
     % unified in one image
     %GOOD resultsEvaluation=dataFeatureProcessor.cutSquaresByLabelNIRUnified(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsSegLAB);
@@ -109,13 +110,40 @@ for n=1:size(fileList)
     %dataFeatureProcessor.drawHeatmap(pathOutputResultsHeatmap);
     % -----------------------------        
     %GOOD tablaDSTraining=dataFeatureProcessor.getFeaturesByLabelRGB(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsFeaturesFiles);
-    %tablaDSTraining=dataFeatureProcessor.getFeaturesByLabelRGBNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsFeaturesFiles);
-    %tablaDSTrainingAll=[tablaDSTrainingAll; tablaDSTraining]
+    tablaDSTraining=dataFeatureProcessor.getFeaturesByLabelRGBNIR(humanLabeledListBbox, humanLabels, labelToFilter, pathOutputResultsFeaturesFiles);
+    tablaDSTrainingAll=[tablaDSTrainingAll; tablaDSTraining]
     % -----------------------------
-    break;
+    %break;
     
     
 end %
-%pathFileCroppedSave=fullfile(pathOutputResultsFeaturesFiles,'allfiles.csv')
-%writetable(tablaDSTrainingAll,pathFileCroppedSave,'Delimiter',';')
+pathFileCroppedSave=fullfile(pathOutputResultsFeaturesFiles,'allfiles.csv')
+writetable(tablaDSTrainingAll,pathFileCroppedSave,'Delimiter',';')
+
+% NIR calc
+meanNIR1One=mean2(tablaDSTrainingAll{3:end,'meanNIR1'});
+stdNIR1One=mean2(tablaDSTrainingAll{3:end,'stdNIR1'});
+possible_t1=meanNIR1One-stdNIR1One;
+possible_t2=meanNIR1One+stdNIR1One;
+fprintf('NIR--> meanNIR1One=%3f stdNIR1One=%3f t1=%3f t2=%3f \n', meanNIR1One, stdNIR1One, possible_t1, possible_t2);
+
+% -------- LAB -------------
+%headers_t={'image_name', 'meanLABL', 'meanLABa', 'meanLABb', 'stdLABL', 'stdLABa', 'stdLABb', 'meanNIR1', 'stdNIR1', 'label_class'};
+meanLABL=mean2(tablaDSTrainingAll{3:end,'meanLABL'});
+stdLABL=mean2(tablaDSTrainingAll{3:end,'stdLABL'});
+possible_t1L=meanLABL-stdLABL;
+possible_t2L=meanLABL+stdLABL;
+%fprintf('L*--> meanNIR1One=%3f stdNIR1One=%3f t1=%3f t2=%3f \n', meanLABL, stdLABL, possible_t1L, possible_t2L);
+
+meanLABa=mean2(tablaDSTrainingAll{3:end,'meanLABa'});
+stdLABa=mean2(tablaDSTrainingAll{3:end,'stdLABa'});
+possible_t1a=meanLABa-stdLABa;
+possible_t2a=meanLABa+stdLABa;
+fprintf('A*--> meanLABa=%3f stdLABa=%3f t1=%3f t2=%3f \n', meanLABa, stdLABa, possible_t1a, possible_t2a);
+
+meanLABb=mean2(tablaDSTrainingAll{3:end,'meanLABb'});
+stdLABb=mean2(tablaDSTrainingAll{3:end,'stdLABb'});
+possible_t1b=meanLABa-stdLABb;
+possible_t2b=meanLABa+stdLABb;
+fprintf('B*--> meanLABb=%3f stdLABb=%3f t1=%3f t2=%3f \n', meanLABb, stdLABb, possible_t1b, possible_t2b);
 

@@ -16,9 +16,25 @@
 %% Settings
 clc; clear all; close all;
 
+%% Images folders Path
+DatasetPath=fullfile('/','home','usuario','development','fruitdetection','fuji_test');
+%DatasetPath=fullfile('/','home','usuario','development','fruitdetection','fuji_test');
+mainPathDsRGB=fullfile(DatasetPath,'images','/'); % RGB
+mainPathDsNIR=fullfile(DatasetPath,'images','/'); % NIR
+mainPathDsXML=fullfile(DatasetPath,'square_annotations1','/'); % path to XML squares labeled by human
+
+%% Output results paths
+pathOutputResultsSegLAB=fullfile(DatasetPath,'outcomesLAB','/');
+pathOutputResultsHeatmap=fullfile(DatasetPath,'outcomesHeatmap','/');
+pathOutputResultsFeaturesFiles=fullfile(DatasetPath,'outcomesFiles','/');
+
+
+% TODO: CLEAR PATHS AND ADD OFFICIAL PATH
 %% Path Images folders
-mainPath = fullfile('/','home','usuario','development','datasets_deep_learning','ClippedFujiDataset')
+mainPath=fullfile('/','home','usuario','development','fruitdetection','testingImages');
 mainInputPath=fullfile('/','home','usuario','development','datasets_deep_learning','ClippedFujiDataset','original','/')
+
+
 
 %% Cut images
 %pathAplicacionAprender=strcat(mainPath,'tmpToLearnK/'); 
@@ -45,10 +61,10 @@ for n=1:size(fileList)
     nombreImagenP=fileList(n).name;
     %% salida segmentacion
     %nombreImagenP='BD04_inf_201724_004_01_RGBhr.jpg';
-    nombreImagenP='apples_squares_1.jpg';
+    %nombreImagenP='apples_squares_1.jpg';
     OutputImageName=strcat(mainInputPath,nombreImagenP);    
     OutputImageNameLAB=strcat(pathOutputResultsSegLAB,nombreImagenP);
-    %OutputImageNameHSV=strcat(pathOutputResultsSegHSV,nombreImagenP);    
+    %OutputImageNameHSV=strcat(pathOutputResultsSegHSV,nombreImagenP);
     fprintf('Clustering -> %s \n',fileList(n).name);        
     fprintf('OutputImageName -> %s \n',OutputImageName);        
     fprintf('OutputImageNameLAB -> %s \n',OutputImageNameLAB);
@@ -56,16 +72,15 @@ for n=1:size(fileList)
     % --------------------
     IRGB=imread(OutputImageName);
     % --------------------
-    %IRGB=imread('/home/usuario/development/datasets_deep_learning/ClippedFujiDataset/images/BD04_inf_201724_004_01_RGBhr.jpg');
     clusterProcessor=KmeansClusterProcessor(clustersQuantity, clusteringRepetition, IRGB);
     clusterProcessor=clusterProcessor.segmentImage();
     clusterProcessor.saveClustersImages(OutputImageNameLAB);
     arrayS=clusterProcessor.getClusters;
-    % -----------------------------
-    labelToFilter='Poma';
-    filterClassifier=FilterClassifier(labelToFilter);
-    IMfiltered=filterClassifier.runFilterClassifier(arrayS);
-    figure;imshow(IMfiltered);
+    %% -----------------------------
+    %labelToFilter='Poma';
+    %filterClassifier=FilterClassifier(labelToFilter);
+    %IMfiltered=filterClassifier.runFilterClassifier(arrayS);
+    %figure;imshow(IMfiltered);
     % -----------------------------    
     break;
     
